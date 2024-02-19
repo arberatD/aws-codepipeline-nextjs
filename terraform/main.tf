@@ -70,6 +70,22 @@ resource "aws_codepipeline" "pipeline" {
     }
   }
 
+  stage {
+    name = "Staging"
+    action {
+      name            = "Staging"
+      category        = "Deploy"
+      owner           = "AWS"
+      provider        = "CodeDeploy"
+      input_artifacts = ["build_output"]
+      version         = "1"
+
+      configuration = {
+        ApplicationName     = aws_codedeploy_app.staging.name
+        DeploymentGroupName = aws_codedeploy_deployment_group.staging.deployment_group_name
+      }
+    }
+  }
 
   stage {
     name = "Deploy"
@@ -318,6 +334,19 @@ resource "aws_codedeploy_deployment_group" "starter" {
       value = var.project_name
     }
   }
+}
+
+resource "aws_codedeploy_app" "staging" {
+  name = "${var.project_name}-staging"
+}
+
+resource "aws_codedeploy_deployment_group" "staging" {
+  app_name              = aws_codedeploy_app.staging.name
+  deployment_group_name = "${var.project_name}-staging"
+  service_role_arn      = aws_iam_role.codedeploy.arn
+
+  # Konfiguration spezifisch für das Staging-Umfeld
+  # (wie Autoscaling-Gruppen, EC2-Tag-Sets usw.)
 }
 
 resource "aws_iam_role" "codedeploy" {
