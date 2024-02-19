@@ -78,7 +78,7 @@ resource "aws_codepipeline" "pipeline" {
 }
 
 resource "aws_iam_role" "pipeline" {
-  name = "${var.project_name}-pipeline-role"
+  name = "${var.project_name}-pippeline-role"
 
   assume_role_policy = <<EOF
 {
@@ -193,7 +193,7 @@ resource "aws_codebuild_project" "build_project" {
 }
 
 resource "aws_iam_role" "codebuild" {
-  name = "${var.project_name}-codebuild-role"
+  name = "${var.project_name}-ccodebuild-role"
 
   assume_role_policy = <<EOF
 {
@@ -308,7 +308,7 @@ resource "aws_codedeploy_deployment_group" "starter" {
 }
 
 resource "aws_iam_role" "codedeploy" {
-  name = "${var.project_name}-codedeploy-role"
+  name = "${var.project_name}-ccodedeploy-role"
 
   assume_role_policy = <<EOF
 {
@@ -439,7 +439,7 @@ resource "aws_launch_configuration" "example" {
 
 # Create the IAM role
 resource "aws_iam_role" "s3_access_role" {
-  name = "s3_access_role"
+  name = "ss3_access_role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
@@ -478,6 +478,6 @@ resource "aws_iam_role_policy" "s3_access_policy" {
 
 # Create the instance profile that will be used by the EC2 instances
 resource "aws_iam_instance_profile" "s3_access_profile" {
-  name = "s3_access_profile"
+  name = "ss3_access_profile"
   role = aws_iam_role.s3_access_role.name
 }
